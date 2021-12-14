@@ -1,0 +1,1 @@
+UPDATE BookInfo SET Returned = 1, Date_Of_Returning = {DATEOFRETURNING} WHERE Id = {IdOFBook};

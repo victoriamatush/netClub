@@ -1,0 +1,2 @@
+DELETE FROM Book
+WHERE Id = {IDOFBOOK};

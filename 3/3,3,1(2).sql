@@ -1,0 +1,2 @@
+DELETE FROM BookInfo
+WHERE BookId = {IDOFBOOK};

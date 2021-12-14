@@ -1,0 +1,2 @@
+DELETE FROM BookInfo
+WHERE Title_Of_Book = {TITLEOFBOOK};
