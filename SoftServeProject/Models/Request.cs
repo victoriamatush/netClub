@@ -16,5 +16,6 @@ namespace SoftServeProject
 
         public virtual Book Book { get; set; }
         public virtual Reader Reader { get; set; }
+
     }
 }

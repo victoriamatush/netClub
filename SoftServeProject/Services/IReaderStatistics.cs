@@ -12,14 +12,22 @@ namespace SoftServeProject.Services
     }
     public struct ReaderStat
     {
-        public List<Book> books;
-        public double howLongSub;
+        public readonly List<Book> books;
+        public readonly double howLongIsSubscriber;
+        public readonly double howLongRead;
+        public ReaderStat(List<Book> _books, double _howLongIsSubscriber, double _howLongRead)
+        {
+            books = _books;
+            howLongIsSubscriber = _howLongIsSubscriber;
+            howLongRead = _howLongRead;
+
+        }
     }
     public interface IReaderStatistics
   {
     public ReaderStat GetReaderStatistics(int id);
     public AllReadersStat GetAllReadersStatistics(DateTime startingDate, DateTime endingDate);
-    public List<int> GetInfoAboutNotReturnedBooks(int id);
+    public List<Book> GetInfoAboutNotReturnedBooks(int id);
 
   }
 }

@@ -36,15 +36,20 @@ namespace SoftServeProject.Services
 
         public ReaderStat GetReaderStatistics(int id)
         {
-            ReaderStat stat = new ReaderStat();
-            stat.books = db.Requests
+            
+            List<Book> books = db.Requests
                 .Where(s => s.ReaderId == id || s.IsApproved == true)
                 .Select(s => s.Book)
                 .ToList();
-            stat.howLongSub = db.Readers
+            double howLongSub = db.Readers
                 .Where(s => s.Id == id)
                 .Select(s => Convert.ToInt32(DateTime.Now - s.RegisterDate))
                 .First();
+            double howLongRead = db.Requests
+                .Where(s => s.ReaderId == id)
+                .Select(s => Convert.ToInt32(s.DateOfReturning - s.DateOfRequest))
+                .Average();
+            ReaderStat stat = new ReaderStat(books, howLongSub, howLongRead);
             return stat;
         }
     }
