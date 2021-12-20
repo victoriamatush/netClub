@@ -6,6 +6,6 @@ namespace SoftServeProject.Services
   {
     public void RequestBook(int bookid, int readerid);
     public void ReturnBook(int id);
-    public string GetOwnStatistics(int user_id);
+    public ReaderStat GetOwnStatistics(int user_id);
   }
 }

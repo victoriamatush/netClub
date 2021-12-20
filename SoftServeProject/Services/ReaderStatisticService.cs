@@ -26,10 +26,10 @@ namespace SoftServeProject.Services
 
         }
 
-        public List<Reader> GetInfoAboutNotReturnedBooks()
+        public List<Reader> GetInfoAboutNotReturnedBooks(int id)
         {
             List<Reader> users = db.Requests
-                .Where(s => s.DateOfReturning == null && s.IsApproved == true)
+                .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == id)
                 .Select(s => s.Reader).ToList();
             return users;
         }

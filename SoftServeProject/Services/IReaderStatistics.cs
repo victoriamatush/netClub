@@ -27,7 +27,7 @@ namespace SoftServeProject.Services
   {
     public ReaderStat GetReaderStatistics(int id);
     public AllReadersStat GetAllReadersStatistics(DateTime startingDate, DateTime endingDate);
-    public List<Book> GetInfoAboutNotReturnedBooks(int id);
+    public List<Reader> GetInfoAboutNotReturnedBooks(int id);
 
   }
 }
