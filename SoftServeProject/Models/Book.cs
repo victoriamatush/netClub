@@ -16,5 +16,6 @@ namespace SoftServeProject
         public string Title { get; set; }
 
         public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Author> Authors { get; set; }
     }
 }

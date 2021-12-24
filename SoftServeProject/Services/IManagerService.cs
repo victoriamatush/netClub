@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace SoftServeProject.Services
 {
   public interface IManagerService
   {
-    public IActionResult RegisterBookCopy(int id);
-    public IActionResult UpdateBookInformation(int id);
-    public IActionResult DeleteOneBookCopy(int id);
-    public IActionResult DeleteAllBookCopies(string title);
-    public IActionResult ApproveRequest(int id);
-    public IActionResult GetBooksByTitle(string title);
+        public bool IsManager(int id);
+        public void RegisterBookCopy(string title, string name, string surname);
+        public void UpdateBookInformation(int id);
+        public void DeleteOneBookCopy(int id);
+        public void DeleteAllBookCopies(string title);
+        public void ApproveRequest(int id);
+        public List<Book> GetBooksByTitle(string title);
+    }
 
 
-  }
 }
+

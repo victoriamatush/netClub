@@ -9,7 +9,11 @@ namespace SoftServeProject.Services
     
     public class ReaderStatisticService : IReaderStatistics
     {
-        UserDBContext db = new UserDBContext();
+        UserDBContext db;
+        public ReaderStatisticService(UserDBContext _db)
+        {
+            db = _db;
+        }
         public AllReadersStat GetAllReadersStatistics(DateTime startingDate, DateTime endingDate)
         {
             AllReadersStat stat = new AllReadersStat();
@@ -17,8 +21,8 @@ namespace SoftServeProject.Services
                 .Select(s => s.Age)
                 .Average();
             stat.avgTimeOfWorking = db.Readers
-                .Select(s => Convert.ToInt32(DateTime.Now - s.RegisterDate))
-                .Average();
+                .Select(s => (DateTime.Now - s.RegisterDate).Days)
+                .Count();
             stat.avgNumOfRequest = db.Requests
                 .Where(s => s.DateOfRequest >= startingDate || s.DateOfRequest <= endingDate)
                 .Count();
@@ -26,10 +30,10 @@ namespace SoftServeProject.Services
 
         }
 
-        public List<Reader> GetInfoAboutNotReturnedBooks(int id)
+        public List<Reader> GetInfoAboutNotReturnedBooks(int _readerId)
         {
             List<Reader> users = db.Requests
-                .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == id)
+                .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
                 .Select(s => s.Reader).ToList();
             return users;
         }
@@ -43,14 +47,14 @@ namespace SoftServeProject.Services
                 .ToList();
             double howLongSub = db.Readers
                 .Where(s => s.Id == id)
-                .Select(s => Convert.ToInt32(DateTime.Now - s.RegisterDate))
+                .Select(s => (DateTime.Now - s.RegisterDate).Days)
                 .First();
             double howLongRead = db.Requests
-                .Where(s => s.ReaderId == id)
-                .Select(s => Convert.ToInt32(s.DateOfReturning - s.DateOfRequest))
+                .Where(s => s.ReaderId == id && s.DateOfReturning != null)
+                .Select(s => ((DateTime)s.DateOfReturning - s.DateOfRequest).Days)
+                .ToList()
                 .Average();
-            ReaderStat stat = new ReaderStat(books, howLongSub, howLongRead);
-            return stat;
+            return  new ReaderStat(books, howLongSub, howLongRead);
         }
     }
 }
