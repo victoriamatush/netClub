@@ -10,9 +10,11 @@ namespace SoftServeProject.Services
     public class ReaderStatisticService : IReaderStatistics
     {
         UserDBContext db;
-        public ReaderStatisticService(UserDBContext _db)
+        IBookService bookService;
+        public ReaderStatisticService(UserDBContext _db, IBookService _bookService)
         {
             db = _db;
+            bookService = _bookService;
         }
         public AllReadersStat GetAllReadersStatistics(DateTime startingDate, DateTime endingDate)
         {
@@ -30,12 +32,16 @@ namespace SoftServeProject.Services
 
         }
 
-        public List<Reader> GetInfoAboutNotReturnedBooks(int _readerId)
+        public List<Book> GetInfoAboutNotReturnedBooks(int _readerId)
         {
-            List<Reader> users = db.Requests
+            List<int> users = db.Requests
                 .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
-                .Select(s => s.Reader).ToList();
-            return users;
+                .Select(s => s.ReaderId)
+                .ToList();
+            List<Book> books = new List<Book>();
+            foreach (int id in users)
+                books.Add(bookService.GetById(id));
+            return books;
         }
 
         public ReaderStat GetReaderStatistics(int id)

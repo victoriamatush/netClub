@@ -21,9 +21,8 @@ namespace SoftServeProject.Services
                 .Where(s => s.BookId == id)
                 .OrderBy(s => s.DateOfRequest)
                 .FirstOrDefault();
-            //--------------------------------------------------------------------Error here
             if (request == null)
-                return "error";
+                return "available";
             if (request.DateOfReturning == null && request.IsApproved == false)
                 return "available";
             return "not available";

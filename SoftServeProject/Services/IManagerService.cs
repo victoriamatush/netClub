@@ -7,7 +7,7 @@ namespace SoftServeProject.Services
   {
         public bool IsManager(int id);
         public void RegisterBookCopy(string title, string name, string surname);
-        public void UpdateBookInformation(int id);
+        public void UpdateBookInformation(int id, string title, int authid, string name, string surname);
         public void DeleteOneBookCopy(int id);
         public void DeleteAllBookCopies(string title);
         public void ApproveRequest(int id);

@@ -25,7 +25,10 @@ namespace SoftServeProject.Controllers
         {
             if (db.Readers.Find(readerId) == null)
                 return NotFound();
-            return View(statisticService.GetInfoAboutNotReturnedBooks(readerId));
+            var info = statisticService.GetInfoAboutNotReturnedBooks(readerId);
+            if (info == null)
+                return NotFound();
+            return View(info);
         }
         public IActionResult GetReaderStatistics(int readerId)
         {

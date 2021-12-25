@@ -34,7 +34,7 @@ namespace SoftServeProject
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IReaderService, ReaderService>();
             services.AddScoped<IReaderStatistics, ReaderStatisticService>();
-            //services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IManagerService, ManagerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
