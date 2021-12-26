@@ -16,25 +16,35 @@ namespace SoftServeProject.Services
         public void ApproveRequest(int id)
         {
             var request = context.Requests.FirstOrDefault(u => u.Id == id);
+            
             request.IsApproved = true;
+            context.SaveChanges();
         }
 
         public void DeleteAllBookCopies(string title)
         {
             var items = context.Books.Where(item => item.Title == title);
             context.Books.RemoveRange(items);
+            context.SaveChanges();
         }
 
         public void DeleteOneBookCopy(int id)
         {
             var item = context.Books.Where(item => item.Bookid == id).Single();
             context.Books.Remove(item);
+            context.SaveChanges();
         }
 
         public List<Book> GetBooksByTitle(string title)
         {
             var items = context.Books.Where(item => item.Title == title);
             return items.ToList();
+        }
+
+        public List<Request> GetRequests()
+        {
+            var requests = context.Requests.ToList();
+            return requests;
         }
 
         public bool IsManager(int id)

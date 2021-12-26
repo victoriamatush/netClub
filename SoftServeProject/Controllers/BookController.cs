@@ -56,9 +56,9 @@ namespace SoftServeProject.Controllers
         public IActionResult GetAvailability(int id)
         {
             if (db.Books.Find(id) == null)
-                return NotFound();
-            string book = books.GetAvailabilityOfBook(id);
-            return Ok(book);
+                return NotFound("Such book not found");
+            bool isAvailable = books.GetAvailabilityOfBook(id);
+            return Ok(isAvailable);
         }
 
         [HttpGet]

@@ -7,7 +7,7 @@ namespace SoftServeProject.Services
   {
         public Book GetById(int id);
         public List<Book> GetInformationAboutAllBooks();
-        public string GetAvailabilityOfBook(int id);
+        public bool GetAvailabilityOfBook(int id);
         public Book GetBookByAuthor(string name, string surname);
         public Book GetBookByTitle(string title);
         public object GetMostPopularBook(string start, string end);

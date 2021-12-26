@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Request> 
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Reader name</th>
+        <th>Book title</th>
+        <th>Date of request</th>
+        <th>Date of returning
+        </th>
+        <th>Is approved</th>
+        <th>Approve request</th>
+    </tr>
+
+    @foreach (var req in Model)
+    {
+<tr>
+    <td>@req.Id</td>
+    <td>@req.ReaderId</td>
+    <td>@req.BookId</td>
+    <td>@req.DateOfRequest</td>
+    <td>@req.DateOfReturning</td>
+    <td>@req.IsApproved</td>
+    <td>
+        @if (req.IsApproved == false)
+        {<a asp-area="" asp-controller="Manager" asp-action="ApproveRequest" asp-route-id="@req.Id"> Approve </a>}
+    </td>
+</tr>
+    }
+
+</table>

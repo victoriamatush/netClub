@@ -26,11 +26,11 @@ namespace SoftServeProject.Services
                 db.Requests.Add(new Request() { BookId = bookid, ReaderId = readerid });
                 db.SaveChanges();
         }
-
         public void ReturnBook(int BookId)
         {
-            var request = db.Requests.FirstOrDefault(request => request.BookId == BookId);
-            request.DateOfReturning = DateTime.Now;
+            // Error here --------------------------------------------------------------
+            var req = db.Requests.Where(req => req.BookId == BookId && req.IsApproved == true && req.DateOfReturning == null).FirstOrDefault();
+            req.DateOfReturning = DateTime.Now;
             db.SaveChanges();
         }
     }

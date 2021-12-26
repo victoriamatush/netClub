@@ -147,3 +147,4 @@ E:\Projects\SoftServeProject\SoftServeProject\bin\Debug\net5.0\runtimes\win-arm6
 E:\Projects\SoftServeProject\SoftServeProject\obj\Debug\net5.0\Razor\Views\ReaderStatistic\GetAllReadersStatistics.cshtml.g.cs
 E:\Projects\SoftServeProject\SoftServeProject\obj\Debug\net5.0\Razor\Views\ReaderStatistic\GetReaderStatistics.cshtml.g.cs
 E:\Projects\SoftServeProject\SoftServeProject\obj\Debug\net5.0\Razor\Views\Reader\GetOwnStatistics.cshtml.g.cs
+E:\Projects\SoftServeProject\SoftServeProject\obj\Debug\net5.0\Razor\Views\Manager\GetAllREquests.cshtml.g.cs

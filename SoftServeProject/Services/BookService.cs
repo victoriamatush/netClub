@@ -15,17 +15,13 @@ namespace SoftServeProject.Services
             context = _context;
         }
 
-        public string GetAvailabilityOfBook(int id)
+        public bool GetAvailabilityOfBook(int id)
         {
-            Request request = context.Requests
-                .Where(s => s.BookId == id)
-                .OrderBy(s => s.DateOfRequest)
-                .FirstOrDefault();
-            if (request == null)
-                return "available";
-            if (request.DateOfReturning == null && request.IsApproved == false)
-                return "available";
-            return "not available";
+            List<Request> requests = context.Requests.Where(r => r.BookId == id).ToList();
+            foreach (var r in requests)
+                if (r.DateOfReturning == null && r.IsApproved == true)
+                    return false;
+            return true;
         }
 
         public Book GetBookByAuthor(string name, string surname)

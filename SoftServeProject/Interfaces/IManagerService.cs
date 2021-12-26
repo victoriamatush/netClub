@@ -12,6 +12,7 @@ namespace SoftServeProject.Services
         public void DeleteAllBookCopies(string title);
         public void ApproveRequest(int id);
         public List<Book> GetBooksByTitle(string title);
+        public List<Request> GetRequests();
     }
 
 

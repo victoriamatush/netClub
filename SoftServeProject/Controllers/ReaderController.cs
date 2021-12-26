@@ -24,6 +24,7 @@ namespace SoftServeProject.Controllers
             var stat = readerService.GetOwnStatistics(readerId);
             return View(stat);
         }
+        [Route("request/{bookId}/{readerId}")]
         public IActionResult RequestBook(int bookId, int readerId)
         {
             if (db.Books.Find(bookId) == null || db.Readers.Find(readerId) == null)
@@ -31,11 +32,15 @@ namespace SoftServeProject.Controllers
             readerService.RequestBook(bookId, readerId);
             return Ok();
         }
+        [Route("return/{bookId}/")]
         public IActionResult ReturnBook(int bookId)
         {
-            if (db.Books.Find(bookId) == null)
-                return NotFound();
-            return Ok();
+            if (db.Requests.Where(r => r.BookId == bookId) == null)
+                return NotFound("failed to find book");
+            if (db.Requests.Where(s => s.BookId == bookId && s.IsApproved == true && s.DateOfReturning == null).FirstOrDefault() == null)
+                return NotFound("No such request found");
+            readerService.ReturnBook(bookId);
+            return Ok("success");
             
         }
         
