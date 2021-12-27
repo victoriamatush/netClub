@@ -34,7 +34,7 @@ namespace SoftServeProject.Services
                            {
                                Bookid = book.Bookid,
                                Title = book.Title,
-                               Authors = new List<Author> { new Author { Name = auth.Name, Surname = auth.Surname } }
+                               //Authors = new List<Author> { new Author { Name = auth.Name, Surname = auth.Surname } }
                            };
             return (Book)response;
         }

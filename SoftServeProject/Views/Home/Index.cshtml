@@ -9,9 +9,16 @@
 <h2>Book catalogue</h2>
 @foreach (var c in Model)
 {
-    @c.Title <a asp-area="" asp-controller="Book" asp-action="GetById" asp-route-id="@c.Bookid">Get by id</a>
+<h4>
+    @c.Title by <a asp-area="" asp-controller="Book" asp-action="GetById" asp-route-id="@c.Bookid">Get by id</a>
     <a asp-area="" asp-controller="Book" asp-action="GetAvailability" asp-route-id="@c.Bookid">Get availability</a>
+    @foreach (Bookauthor bk in c.Bookauthors)
+    {
+        <h6>@bk.Author.Name  @bk.Author.Surname</h6>
+    }
+</h4> 
     <br />
+    
 }
 <a asp-area="" asp-controller="Book" asp-action="GetMostPopularBook" asp-route-start="@DateTime.MinValue" asp-route-end="@DateTime.Now">All time popular book</a>
 <a asp-area="" asp-controller="ReaderStatistic" asp-action="GetAllReadersStatistics">All readers statistics</a>

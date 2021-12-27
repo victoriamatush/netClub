@@ -10,5 +10,6 @@ namespace SoftServeProject
         public int Authorid { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public virtual ICollection<Bookauthor> Bookauthors { get; set; }
     }
 }

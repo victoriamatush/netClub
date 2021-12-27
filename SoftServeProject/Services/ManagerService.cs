@@ -55,16 +55,11 @@ namespace SoftServeProject.Services
 
         public void RegisterBookCopy(string title, string name, string surname)
         {
-            context.Books.Add(new Book { Title = title });
+            //Error-----------------------------------------------------------------------------------
+            context.Books.Add(new Book { Title = title} );
             context.Authors.Add(new Author { Name = name, Surname = surname });
             context.SaveChanges();
-            var bookid = ((Book)context.Books.FirstOrDefault(b => b.Title == title)).Bookid;
 
-            var authorid = ((Author)context.Authors.FirstOrDefault
-                (a => a.Name == name && a.Surname == surname))
-                .Authorid;
-
-            context.Bookauthors.Add(new Bookauthor { Bookid = bookid, Authorid = authorid });
         }
 
         public void UpdateBookInformation(int bookid, string title, int authid, string name, string surname)

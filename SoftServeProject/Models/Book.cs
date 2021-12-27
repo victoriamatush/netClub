@@ -7,15 +7,11 @@ namespace SoftServeProject
 {
     public partial class Book
     {
-        public Book()
-        {
-            Requests = new HashSet<Request>();
-        }
 
         public int Bookid { get; set; }
         public string Title { get; set; }
 
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Author> Authors { get; set; }
+        public virtual ICollection<Bookauthor> Bookauthors { get; set; }
     }
 }

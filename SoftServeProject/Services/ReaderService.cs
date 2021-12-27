@@ -28,7 +28,6 @@ namespace SoftServeProject.Services
         }
         public void ReturnBook(int BookId)
         {
-            // Error here --------------------------------------------------------------
             var req = db.Requests.Where(req => req.BookId == BookId && req.IsApproved == true && req.DateOfReturning == null).FirstOrDefault();
             req.DateOfReturning = DateTime.Now;
             db.SaveChanges();

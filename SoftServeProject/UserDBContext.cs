@@ -26,18 +26,10 @@ namespace SoftServeProject
         public virtual DbSet<Bookauthor> Bookauthors { get; set; }
         public virtual DbSet<Reader> Readers { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        IConfigurationRoot configuration = new ConfigurationBuilder()
-        //           .SetBasePath(Directory.GetCurrentDirectory())
-        //           .AddJsonFile("appsettings.json")
-        //           .Build();
-        //        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        //        optionsBuilder.UseSqlServer(connectionString);
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,13 +50,15 @@ namespace SoftServeProject
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SURNAME");
+
             });
 
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.ToTable("BOOK");
 
-                entity.Property(e => e.Bookid).HasColumnName("BOOKID");
+                entity.Property(e => e.Bookid)
+                .HasColumnName("BOOKID");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -75,7 +69,7 @@ namespace SoftServeProject
 
             modelBuilder.Entity<Bookauthor>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(t => new { t.Authorid, t.Bookid});
 
                 entity.ToTable("BOOKAUTHORS");
 
@@ -84,13 +78,13 @@ namespace SoftServeProject
                 entity.Property(e => e.Bookid).HasColumnName("BOOKID");
 
                 entity.HasOne(d => d.Author)
-                    .WithMany()
+                    .WithMany(s => s.Bookauthors)
                     .HasForeignKey(d => d.Authorid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__BOOKAUTHO__AUTHO__534D60F1");
 
                 entity.HasOne(d => d.Book)
-                    .WithMany()
+                    .WithMany(s => s.Bookauthors)
                     .HasForeignKey(d => d.Bookid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__BOOKAUTHO__BOOKI__52593CB8");
