@@ -34,13 +34,13 @@ namespace SoftServeProject.Services
 
         public List<Book> GetInfoAboutNotReturnedBooks(int _readerId)
         {
-            List<int> users = db.Requests
-                .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
-                .Select(s => s.ReaderId)
-                .ToList();
+            //List<int> users = db.Requests
+            //    .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
+            //    .Select(s => s.ReaderId)
+            //    .ToList();
             List<Book> books = new List<Book>();
-            foreach (int id in users)
-                books.Add(bookService.GetById(id));
+            //foreach (int id in users)
+            //    books.Add(bookService.GetById(id).);
             return books;
         }
 

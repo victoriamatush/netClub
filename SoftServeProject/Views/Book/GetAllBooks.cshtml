@@ -1,0 +1,13 @@
+﻿@model ICollection<Book>
+Book catalogue
+@foreach (var c in Model)
+{
+    @c.Title
+    <br />
+    foreach (Bookauthor ba in c.Bookauthors)
+    {
+        <h10>@ba.Author.Name @ba.Author.Surname</h10>
+    <br />
+    }
+    <br />
+    }

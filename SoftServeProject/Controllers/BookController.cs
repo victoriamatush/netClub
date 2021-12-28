@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SoftServeProject;
 using SoftServeProject.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SoftServeProject.Controllers
 {
@@ -23,7 +19,7 @@ namespace SoftServeProject.Controllers
         [Route("books/{id}/")]
         public IActionResult GetById(int id)
         {
-            Book book = books.GetById(id);
+            List<Bookauthor> book = books.GetById(id);
             if (book == null)
             {
                 return NotFound(new
@@ -32,7 +28,7 @@ namespace SoftServeProject.Controllers
                     message = "Book is not found"
                 });
             }
-            return Ok(book);
+            return View(book);
         }
 
         [HttpGet]
@@ -76,7 +72,7 @@ namespace SoftServeProject.Controllers
             }
             return Ok(book);
         }
-        
+
 
         [HttpGet]
         [Route("books/")]
@@ -91,7 +87,7 @@ namespace SoftServeProject.Controllers
                     message = "Books are not found"
                 });
             }
-            return Ok(book);
+            return View(book);
         }
 
         public IActionResult GetLeastPopularBook(string start, string end)

@@ -45,9 +45,9 @@ namespace SoftServeProject.Services
             return b;
         }
 
-        public Book GetById(int id)
+        public List<Bookauthor> GetById(int id)
         {
-            Book b = context.Books.FirstOrDefault(x => x.Bookid == id);
+            List<Bookauthor> b = context.Bookauthors.Where(s => s.Bookid == id).ToList();
             return b;
         }
 

@@ -5,7 +5,7 @@ namespace SoftServeProject.Services
 {
   public interface IBookService
   {
-        public Book GetById(int id);
+        public List<Bookauthor> GetById(int id);
         public List<Book> GetInformationAboutAllBooks();
         public bool GetAvailabilityOfBook(int id);
         public Book GetBookByAuthor(string name, string surname);
