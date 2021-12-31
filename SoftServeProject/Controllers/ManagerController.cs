@@ -11,13 +11,11 @@ namespace SoftServeProject.Controllers
     {
         private readonly IManagerService manager;
         private readonly UserDBContext context;
-        private readonly IBookService bookService;
 
         public ManagerController(IManagerService _manager, UserDBContext _context, IBookService _bookService)
         {
             manager = _manager;
             context = _context;
-            bookService = _bookService;
         }
         public IActionResult Index()
         {
@@ -37,14 +35,14 @@ namespace SoftServeProject.Controllers
         public IActionResult DeleteAllBookCopies(string title)
         {
             manager.DeleteAllBookCopies(title);
-            return Ok();
+            return Ok(new { status = Ok().StatusCode, message = "Deleted" });
         }
 
         [Route("delete/{id}/")]
         public IActionResult DeleteOneBookCopy(int id)
         {
             manager.DeleteOneBookCopy(id);
-            return Ok();
+            return Ok(new { status = Ok().StatusCode, message = "Deleted" });
         }
 
         [Route("all/{title}/")]
@@ -57,7 +55,7 @@ namespace SoftServeProject.Controllers
         public IActionResult RegisterBookCopy(string title, string name, string surname)
         {
             manager.RegisterBookCopy(title, name, surname);
-            return Ok("success");
+            return Ok(new { status = Ok().StatusCode, message = "Registered" });
         }
 
         
@@ -66,12 +64,15 @@ namespace SoftServeProject.Controllers
         public IActionResult UpdateBookInformation(
             int bookid, 
             string title, 
-            int authid, 
-            string name,
-            string surname)
+            int authid)
         {
-            manager.UpdateBookInformation(bookid, title, authid, name, surname);
-            return Ok("success");
+            manager.UpdateBookInformation(bookid, title, authid);
+            return Ok(new { status = Ok().StatusCode, message = "Updated successfully" });
+        }
+        public IActionResult UpdateAuthorInformation(int authId, string name, string surname)
+        {
+            manager.UpdateAuthorInformation(authId, name, surname);
+            return Ok(new { status = Ok().StatusCode, message = "Update" });
         }
         [Route("requests/")]
         public IActionResult GetAllRequests()

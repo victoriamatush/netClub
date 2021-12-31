@@ -11,7 +11,7 @@ namespace SoftServeProject
         public int Bookid { get; set; }
         public string Title { get; set; }
 
-        public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Bookauthor> Bookauthors { get; set; }
+        public ICollection<Request> Requests { get; set; }
+        public ICollection<Author> Authors { get; set; }
     }
 }

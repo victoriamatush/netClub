@@ -18,6 +18,6 @@ namespace SoftServeProject
         public bool IsManager { get; set; }
         public DateTime RegisterDate { get; set; }
 
-        public virtual ICollection<Request> Requests { get; set; }
+        public ICollection<Request> Requests { get; set; }
     }
 }

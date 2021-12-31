@@ -10,12 +10,8 @@
 @foreach (var c in Model)
 {
 <h4>
-    @c.Title by <a asp-area="" asp-controller="Book" asp-action="GetById" asp-route-id="@c.Bookid">Get by id</a>
+    @c.Title by  <a asp-area="" asp-controller="Book" asp-action="GetById" asp-route-id="@c.Bookid">Get by id</a>
     <a asp-area="" asp-controller="Book" asp-action="GetAvailability" asp-route-id="@c.Bookid">Get availability</a>
-    @foreach (Bookauthor bk in c.Bookauthors)
-    {
-        <h6>@bk.Author.Name  @bk.Author.Surname</h6>
-    }
 </h4> 
     <br />
     

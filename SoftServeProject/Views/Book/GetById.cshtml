@@ -1,7 +1,7 @@
-﻿@model ICollection<Bookauthor>
+﻿@model Book
 
-Book title is @Model.FirstOrDefault().Book.Title
-Book authors are @foreach(var c in Model)
+Book title is @Model.Title
+Book authors are @foreach(var c in Model.Authors)
             {
-                @c.Author.Name @c.Author.Surname <br />
+                @c.Name @c.Surname <br />
             }

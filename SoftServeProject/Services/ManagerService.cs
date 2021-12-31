@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace SoftServeProject.Services
         public void ApproveRequest(int id)
         {
             var request = context.Requests.FirstOrDefault(u => u.Id == id);
-            
             request.IsApproved = true;
             context.SaveChanges();
         }
@@ -37,13 +37,19 @@ namespace SoftServeProject.Services
 
         public List<Book> GetBooksByTitle(string title)
         {
-            var items = context.Books.Where(item => item.Title == title);
-            return items.ToList();
+            var items = context.Books
+                .Where(item => item.Title == title)
+                .Include(s => s.Authors)
+                .ToList();
+            return items;
         }
 
         public List<Request> GetRequests()
         {
-            var requests = context.Requests.ToList();
+            var requests = context.Requests
+                .Include(s => s.Book)
+                .Include(s => s.Reader)
+                .ToList();
             return requests;
         }
 
@@ -55,25 +61,39 @@ namespace SoftServeProject.Services
 
         public void RegisterBookCopy(string title, string name, string surname)
         {
-            //Error-----------------------------------------------------------------------------------
-            context.Books.Add(new Book { Title = title} );
-            context.Authors.Add(new Author { Name = name, Surname = surname });
+            Author auth;
+            Book book;
+            if (context.Authors.Where(s => s.Name == name && s.Surname == surname).Count() != 0)
+                auth = context.Authors
+                    .Where(s => s.Name == name && s.Surname == surname)
+                    .FirstOrDefault();
+            else
+                auth = new Author() { Name = name, Surname = surname };
+            book = new Book { Title = title, Authors = new List<Author> { auth } };
+            context.Books.Add(book);
+            context.Authors.Add(auth);
             context.SaveChanges();
 
         }
 
-        public void UpdateBookInformation(int bookid, string title, int authid, string name, string surname)
+        public void UpdateBookInformation(int bookid, string title, int authid)
         {
             context.Books.Where(b => b.Bookid == bookid).ToList().ForEach(b => { b.Title = title; });
-
-            context.Authors.Where(a => a.Authorid == authid).
-                ToList().
-                ForEach(a =>
-                {
-                    a.Name = name;
-                    a.Surname = surname;
-                });
             context.SaveChanges();
         }
+
+
+        public void UpdateAuthorInformation(int authId, string name, string surname)
+        {
+             context.Authors.Where(a => a.Authorid == authId).
+                 ToList().
+                 ForEach(a =>
+                 {
+                     a.Name = name;
+                     a.Surname = surname;
+                 });
+        }
+
+        
     }
 }

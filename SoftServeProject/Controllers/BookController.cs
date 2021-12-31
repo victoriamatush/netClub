@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SoftServeProject.Services;
+using System;
 using System.Collections.Generic;
 
 namespace SoftServeProject.Controllers
@@ -19,7 +20,7 @@ namespace SoftServeProject.Controllers
         [Route("books/{id}/")]
         public IActionResult GetById(int id)
         {
-            List<Bookauthor> book = books.GetById(id);
+            Book book = books.GetById(id);
             if (book == null)
             {
                 return NotFound(new
@@ -35,7 +36,7 @@ namespace SoftServeProject.Controllers
         [Route("bytitle/{title}/")]
         public IActionResult GetByTitle(string title)
         {
-            Book book = books.GetBookByTitle(title);
+            List<Book> book = books.GetBooksByTitle(title);
             if (book == null)
             {
                 return NotFound(new
@@ -61,7 +62,7 @@ namespace SoftServeProject.Controllers
         [Route("byauthor/{id}/")]
         public IActionResult GetByAuthor(string name, string surname)
         {
-            Book book = books.GetBookByAuthor(name, surname);
+            List<Book> book = books.GetBooksByAuthor(name, surname);
             if (book == null)
             {
                 return NotFound(new
@@ -90,15 +91,13 @@ namespace SoftServeProject.Controllers
             return View(book);
         }
 
-        public IActionResult GetLeastPopularBook(string start, string end)
+        public IActionResult GetLeastPopularBook(DateTime start, DateTime end)
         {
             var res = books.GetLeastPopularBook(start, end);
             return Ok(res);
         }
 
-        [HttpGet]
-        [Route("popular/")]
-        public IActionResult GetMostPopularBook(string start, string end)
+        public IActionResult GetMostPopularBook(DateTime start, DateTime end)
         {
             var res = books.GetMostPopularBook(start, end);
             return Ok(res);

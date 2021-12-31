@@ -18,29 +18,42 @@ namespace SoftServeProject.Services
         }
         public AllReadersStat GetAllReadersStatistics(DateTime startingDate, DateTime endingDate)
         {
-            AllReadersStat stat = new AllReadersStat();
-            stat.avgAgeOfClient = db.Readers
+            var _avgAgeOfClient = db.Readers
                 .Select(s => s.Age)
-                .Average();
-            stat.avgTimeOfWorking = db.Readers
-                .Select(s => (DateTime.Now - s.RegisterDate).Days)
                 .Count();
-            stat.avgNumOfRequest = db.Requests
+            var _avgTimeOfWorking = db.Readers
+                .Select(s => s.Age)
+                .Count();
+            var _numOfRequest = db.Requests
                 .Where(s => s.DateOfRequest >= startingDate || s.DateOfRequest <= endingDate)
                 .Count();
-            return stat;
-
+            if (_avgAgeOfClient == 0 || _avgTimeOfWorking == 0 || _numOfRequest == 0)
+                return new AllReadersStat();
+            else
+                return new AllReadersStat()
+                {
+                    avgAgeOfClient = db.Readers
+                .Select(s => s.Age)
+                .ToList()
+                .Average(),
+                    avgTimeOfWorking = db.Readers
+                .Select(s => (DateTime.Now - s.RegisterDate).Days)
+                .ToList()
+                .Average(),
+                    numOfRequest = db.Requests
+                .Where(s => s.DateOfRequest >= startingDate || s.DateOfRequest <= endingDate)
+                .ToList()
+                .Count()
+                };
         }
+        
 
         public List<Book> GetInfoAboutNotReturnedBooks(int _readerId)
         {
-            //List<int> users = db.Requests
-            //    .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
-            //    .Select(s => s.ReaderId)
-            //    .ToList();
-            List<Book> books = new List<Book>();
-            //foreach (int id in users)
-            //    books.Add(bookService.GetById(id).);
+            List<Book> books = db.Requests
+                .Where(s => s.DateOfReturning == null && s.IsApproved == true && s.ReaderId == _readerId)
+                .Select(s => s.Book)
+                .ToList();
             return books;
         }
 

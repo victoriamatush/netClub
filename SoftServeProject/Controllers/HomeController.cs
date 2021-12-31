@@ -20,7 +20,8 @@ namespace SoftServeProject.Controllers
 
         public IActionResult Index()
         {
-            return View(db.Books.ToList());
+            
+            return View(db.Books.Include(s => s.Authors).ToList());
         }
 
         public IActionResult Privacy()

@@ -14,8 +14,8 @@ namespace SoftServeProject
         public DateTime? DateOfReturning { get; set; }
         public bool IsApproved { get; set; }
 
-        public virtual Book Book { get; set; }
-        public virtual Reader Reader { get; set; }
+        public Book Book { get; set; }
+        public Reader Reader { get; set; }
 
     }
 }

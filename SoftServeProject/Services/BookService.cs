@@ -1,4 +1,5 @@
-﻿using SoftServeProject;
+﻿using Microsoft.EntityFrameworkCore;
+using SoftServeProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,67 +25,65 @@ namespace SoftServeProject.Services
             return true;
         }
 
-        public Book GetBookByAuthor(string name, string surname)
+        public List<Book> GetBooksByAuthor(string name, string surname)
         {
-            var response = from ba in context.Bookauthors
-                           join auth in context.Authors on ba.Authorid equals auth.Authorid
-                           join book in context.Books on ba.Bookid equals book.Bookid
-                           where auth.Name == name && auth.Surname == surname
-                           select new Book
-                           {
-                               Bookid = book.Bookid,
-                               Title = book.Title,
-                               //Authors = new List<Author> { new Author { Name = auth.Name, Surname = auth.Surname } }
-                           };
-            return (Book)response;
+            List<Book> books = context.Books
+                .Include(s => s.Authors)
+                .Where(s => s.Authors.Contains(new Author() { Name = name, Surname = surname }))
+                .ToList();                
+            return books;
         }
 
-        public Book GetBookByTitle(string title)
+        public List<Book> GetBooksByTitle(string title)
         {
-            Book b = context.Books.FirstOrDefault(b => b.Title == title);
-            return b;
+            List<Book> books = context.Books
+                .Where(s => s.Title == title)
+                .Include(s => s.Authors)
+                .ToList();
+            return books;
         }
 
-        public List<Bookauthor> GetById(int id)
+        public Book GetById(int id)
         {
-            List<Bookauthor> b = context.Bookauthors.Where(s => s.Bookid == id).ToList();
+             Book b = context.Books.Where(s => s.Bookid == id).Include(s => s.Authors).FirstOrDefault();
             return b;
         }
 
         public List<Book> GetInformationAboutAllBooks()
         {
-            var books = context.Books;
+            var books = context.Books
+                .Include(s => s.Authors)
+                .ToList();
             return books.ToList();
         }
 
-        public System.Object GetLeastPopularBook(string start, string end)
+        public Book GetLeastPopularBook(DateTime start, DateTime end)
         {
-            var response = (from req in context.Requests
-                            join book in context.Books on req.BookId equals book.Bookid
-                            where req.DateOfRequest >= Convert.ToDateTime(start)
-                            && req.DateOfReturning <= Convert.ToDateTime(end)
-                            group req by book.Title into g
-                            select new
-                            {
-                                Title = g.Key,
-                                Amount = g.Count()
-                            }).Reverse().FirstOrDefault();
-            return response;
+            int id = GetPopularityOfEachBookInDescending(start, end)
+                .First()
+                .Key;
+            Book book = GetById(id);
+            return book;
         }
 
-        public System.Object GetMostPopularBook(string start, string end)
+        public Book GetMostPopularBook(DateTime start, DateTime end)
         {
-            var response = (from req in context.Requests
-                            join book in context.Books on req.BookId equals book.Bookid
-                            where req.DateOfRequest >= Convert.ToDateTime(start)
-                            && req.DateOfReturning <= Convert.ToDateTime(end)
-                            group req by book.Title into g
-                            select new
-                            {
-                                Title = g.Key,
-                                Amount = g.Count()
-                            }).FirstOrDefault();
-            return response;
+            int id = GetPopularityOfEachBookInDescending(start, end).
+                Reverse()
+                .FirstOrDefault().Key;
+            Book book = GetById(id);
+            return book;
+        }
+        private Dictionary<int, int> GetPopularityOfEachBookInDescending(DateTime start, DateTime end)
+        {
+            var groups = context.Requests
+                .Where(s => s.DateOfRequest > start)
+                .Include(s => s.Book)
+                .GroupBy(s => s.BookId)
+                .Select(group => new { id = group.Key, count = group.Count() })
+                .ToDictionary(s => s.id, s => s.count);
+            return groups;
+                
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,25 @@ namespace SoftServeProject.Services
     {
         UserDBContext db;
         IReaderStatistics readStat;
-        public ReaderService(IReaderStatistics _readStat, UserDBContext _db)
+        IBookService bookService;
+        public ReaderService(IReaderStatistics _readStat, UserDBContext _db, IBookService _bookService)
         {
             readStat = _readStat;
             db = _db;
+            bookService = _bookService;
         }
-        
+        public Reader GetReaderById(int id)
+        {
+            Reader auth = db.Readers.Where(s => s.Id == id).Include(s => s.Requests).FirstOrDefault();
+            return auth;
+        }
+
+        public List<Reader> GetReaderByName(string name)
+        {
+            List<Reader> auth = db.Readers.Where(s => s.Name == name).Include(s => s.Requests).ToList();
+            return auth;
+        }
+
         public ReaderStat GetOwnStatistics(int user_id)
         {
             return readStat.GetReaderStatistics(user_id);
@@ -23,7 +37,13 @@ namespace SoftServeProject.Services
 
         public void RequestBook(int bookid, int readerid)
         {
-                db.Requests.Add(new Request() { BookId = bookid, ReaderId = readerid });
+                db.Requests
+                .Add(new Request() { 
+                    BookId = bookid, 
+                    ReaderId = readerid,
+                    Book = bookService.GetById(bookid),
+                    Reader =  GetReaderById(readerid)
+                });
                 db.SaveChanges();
         }
         public void ReturnBook(int BookId)

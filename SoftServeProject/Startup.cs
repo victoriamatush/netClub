@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SoftServeProject.Interfaces;
 using SoftServeProject.Services;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace SoftServeProject
             services.AddScoped<IReaderService, ReaderService>();
             services.AddScoped<IReaderStatistics, ReaderStatisticService>();
             services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IAuthorService, AuthorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

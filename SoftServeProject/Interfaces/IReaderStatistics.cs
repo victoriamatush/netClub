@@ -8,7 +8,7 @@ namespace SoftServeProject.Services
     {
         public double avgAgeOfClient;
         public double avgTimeOfWorking;
-        public double avgNumOfRequest;
+        public double numOfRequest;
     }
     public struct ReaderStat
     {

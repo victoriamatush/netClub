@@ -21,15 +21,11 @@ namespace SoftServeProject
             Database.EnsureCreated();
         }
 
-        public virtual DbSet<Author> Authors { get; set; }
-        public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<Bookauthor> Bookauthors { get; set; }
-        public virtual DbSet<Reader> Readers { get; set; }
-        public virtual DbSet<Request> Requests { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        public  DbSet<Author> Authors { get; set; }
+        public  DbSet<Book> Books { get; set; }
+        public  DbSet<Reader> Readers { get; set; }
+        public  DbSet<Request> Requests { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,28 +63,7 @@ namespace SoftServeProject
                     .HasColumnName("TITLE");
             });
 
-            modelBuilder.Entity<Bookauthor>(entity =>
-            {
-                entity.HasKey(t => new { t.Authorid, t.Bookid});
-
-                entity.ToTable("BOOKAUTHORS");
-
-                entity.Property(e => e.Authorid).HasColumnName("AUTHORID");
-
-                entity.Property(e => e.Bookid).HasColumnName("BOOKID");
-
-                entity.HasOne(d => d.Author)
-                    .WithMany(s => s.Bookauthors)
-                    .HasForeignKey(d => d.Authorid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BOOKAUTHO__AUTHO__534D60F1");
-
-                entity.HasOne(d => d.Book)
-                    .WithMany(s => s.Bookauthors)
-                    .HasForeignKey(d => d.Bookid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BOOKAUTHO__BOOKI__52593CB8");
-            });
+            
 
             modelBuilder.Entity<Reader>(entity =>
             {
@@ -136,19 +111,16 @@ namespace SoftServeProject
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.BookId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__REQUEST__BOOK_ID__5441852A");
 
                 entity.HasOne(d => d.Reader)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.ReaderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__REQUEST__READER___5535A963");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
